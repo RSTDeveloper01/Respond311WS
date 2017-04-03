@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Servers</key>
+	<array>
+		<dict>
+			<key>name</key>
+			<string>Municipios PR</string>
+			<key>url</key>
+			<string>http://respond311api.respondcrm.com/dev/V2.0/Open311API.svc/</string>
+			<key>supports_media</key>
+			<true/>
+			<key>jurisdiction_id</key>
+			<string>municipiospr</string>
+			<key>api_key</key>
+			<string>00000000-0000-0000-0000-000000000000</string>
+		</dict>
+	</array>
+</dict>
+</plist>
