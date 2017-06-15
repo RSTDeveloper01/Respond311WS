@@ -19,6 +19,7 @@
 #import "Preferences.h"
 #import "AFHTTPClient.h"
 #import "AFJSONRequestOperation.h"
+#import "AFNetworking.h"
 #import "Media.h"
 #import "CoreLocation/CoreLocation.h"
 
@@ -52,18 +53,14 @@ SHARED_SINGLETON(Open311);
 // Make sure to call this method before doing any other work
 - (void)loadAllMetadataForServer:(NSDictionary *)server
 {
-    if (_groups             == nil) { _groups             = [[NSMutableArray      alloc] init]; } else { [_groups             removeAllObjects]; }
-    if (_services             == nil) { _services             = [[NSMutableArray      alloc] init]; } else { [_services             removeAllObjects]; }
-    if (_serviceDefinitions == nil) { _serviceDefinitions = [[NSMutableDictionary alloc] init]; } else { [_serviceDefinitions removeAllObjects]; }
-    if (_accounts             == nil) { _accounts             = [[NSMutableArray      alloc] init]; } else { [_accounts             removeAllObjects]; }
-    
-    
-
-    
-    locationManager = [[CLLocationManager alloc]init];
-    locationManager.delegate = self;
-    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    geocoder = [[CLGeocoder alloc]init];
+    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+    {
+        locationManager = [[CLLocationManager alloc] init];
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters;
+        [locationManager startUpdatingLocation];
+        geocoder = [[CLGeocoder alloc] init];
+    }
     
     currentServer = server;
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
@@ -72,7 +69,14 @@ SHARED_SINGLETON(Open311);
     if (jurisdictionId != nil) { params[kOpen311_Jurisdiction] = jurisdictionId; }
     if (apiKey         != nil) { params[kOpen311_ApiKey]       = apiKey; }
     _endpointParameters = [NSDictionary dictionaryWithDictionary:params];
-    httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[server objectForKey:kOpen311_Url]]];
+    
+    if (_groups             == nil) { _groups             = [[NSMutableArray      alloc] init]; } else { [_groups             removeAllObjects]; }
+    if (_services             == nil) { _services             = [[NSMutableArray      alloc] init]; } else { [_services             removeAllObjects]; }
+    if (_serviceDefinitions == nil) { _serviceDefinitions = [[NSMutableDictionary alloc] init]; } else { [_serviceDefinitions removeAllObjects]; }
+    if (_accounts             == nil) { _accounts             = [[NSMutableArray      alloc] init]; } else { [_accounts             removeAllObjects]; }
+   
+    
+   httpClient = [AFHTTPClient clientWithBaseURL:[NSURL URLWithString:[server objectForKey:kOpen311_Url]]];
     
     [self loadAccountList];
 }
@@ -93,43 +97,43 @@ SHARED_SINGLETON(Open311);
     
     [locationManager startUpdatingLocation];
     
-    //[[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
-    
-   
-    
-    
-//    if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined || [CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorized)
-//    {
-//        locationFirstTime=true;
-//        locationManager = [[CLLocationManager alloc] init];
-//        locationManager.delegate = self;
-//        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
-//        locationManager.distanceFilter = 50;
-//        
-//        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
-//            [locationManager requestWhenInUseAuthorization];
-//        
-//        [locationManager startUpdatingLocation];
-//        
-//    }
-//    
-//    else{
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
-//    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
     
     
     
-//    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
-//    {
-//        locationFirstTime=true;
-//        [locationManager startUpdatingLocation];
-//    }
-//
-//    else{
-//        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
-//    }
-
-   
+    
+    //    if([CLLocationManager authorizationStatus]==kCLAuthorizationStatusNotDetermined || [CLLocationManager authorizationStatus]==kCLAuthorizationStatusAuthorized)
+    //    {
+    //        locationFirstTime=true;
+    //        locationManager = [[CLLocationManager alloc] init];
+    //        locationManager.delegate = self;
+    //        locationManager.desiredAccuracy = kCLLocationAccuracyHundredMeters;
+    //        locationManager.distanceFilter = 50;
+    //
+    //        if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    //            [locationManager requestWhenInUseAuthorization];
+    //
+    //        [locationManager startUpdatingLocation];
+    //
+    //    }
+    //
+    //    else{
+    //        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
+    //    }
+    
+    
+    
+    //    if([CLLocationManager authorizationStatus] == kCLAuthorizationStatusAuthorized || [CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined)
+    //    {
+    //        locationFirstTime=true;
+    //        [locationManager startUpdatingLocation];
+    //    }
+    //
+    //    else{
+    //        [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
+    //    }
+    
+    
 }
 
 -(void) clearGpsCity{
@@ -216,14 +220,18 @@ SHARED_SINGLETON(Open311);
 #pragma mark - GET Account List
 - (void)loadAccountList
 {
-    if (_accounts             == nil) { _accounts             = [[NSMutableArray      alloc] init]; } else { [_accounts             removeAllObjects]; }
-  
+    if (_accounts             == nil) {
+        _accounts             = [[NSMutableArray      alloc] init];
+    } else {
+        [_accounts             removeAllObjects];
+    }
+    
     NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
     NSString *apiKey         = currentServer[kOpen311_ApiKey];
     params[kOpen311_Jurisdiction] = @"municipiospr";
     
     [httpClient getPath:@"accounts.json"
-             parameters:params
+             parameters:_endpointParameters
                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
                     NSError *error;
                     accountList = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
@@ -264,25 +272,25 @@ SHARED_SINGLETON(Open311);
         if (group == nil) { group = kUI_Uncategorized; }
         if (![_groups containsObject:group]) { [_groups addObject:group]; }
         
-       // Fire off a service definition request, if needed
-       /*
-        __block NSString *serviceCode = [service objectForKey:kOpen311_ServiceCode];
-        __block NSString *serviceId = [service objectForKey:krst_ServiceId];
-        if ([[service objectForKey:kOpen311_Metadata] boolValue]) {
-            [httpClient getPath:[NSString stringWithFormat:@"services/%@.json", serviceId]
-                     parameters:_endpointParameters
-                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                            NSError *error;
-                            _serviceDefinitions[serviceCode] = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
-                            if (error) {
-                                [self loadFailedWithError:error];
-                            }
-                        }
-                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-                            [self loadFailedWithError:error];
-                        }
-             ];
-        }*/
+        // Fire off a service definition request, if needed
+        /*
+         __block NSString *serviceCode = [service objectForKey:kOpen311_ServiceCode];
+         __block NSString *serviceId = [service objectForKey:krst_ServiceId];
+         if ([[service objectForKey:kOpen311_Metadata] boolValue]) {
+         [httpClient getPath:[NSString stringWithFormat:@"services/%@.json", serviceId]
+         parameters:_endpointParameters
+         success:^(AFHTTPRequestOperation *operation, id responseObject) {
+         NSError *error;
+         _serviceDefinitions[serviceCode] = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
+         if (error) {
+         [self loadFailedWithError:error];
+         }
+         }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+         [self loadFailedWithError:error];
+         }
+         ];
+         }*/
     }
     
     NSSortDescriptor *aToZ= [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
@@ -321,23 +329,23 @@ SHARED_SINGLETON(Open311);
                     }
          ];
     }
-       
+    
     
 }
 
 
 
 /*
-- (void)loadServiceDefinitions
-{
-    int count = [serviceList count];
-    if(count>0)
-    {
-        [_services addObjectsFromArray:serviceList];
-    }
-    [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_ServiceListReady object:self];
-}
-*/
+ - (void)loadServiceDefinitions
+ {
+ int count = [serviceList count];
+ if(count>0)
+ {
+ [_services addObjectsFromArray:serviceList];
+ }
+ [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_ServiceListReady object:self];
+ }
+ */
 
 - (void)loadAccountDefinitions
 {
@@ -376,6 +384,12 @@ SHARED_SINGLETON(Open311);
 
 - (void) getServicesForAccount:(NSDictionary *)account
 {
+    account = [NSDictionary dictionaryWithObjectsAndKeys:
+                       @"Respond311",@"account_name",
+                       @"",@"url"
+                       , nil];
+    
+    
     _selectedCity=[account objectForKey:@"account_name"];
     
     if(![[account objectForKey:kRst_AccountURL] isEqualToString:@""]){
@@ -383,13 +397,13 @@ SHARED_SINGLETON(Open311);
         NSArray *parts=[[account objectForKey:kRst_AccountURL]componentsSeparatedByString:@"."];
         NSString *jurisdictionId = [[[parts objectAtIndex:0]componentsSeparatedByString:@"//"]objectAtIndex:1];
         NSDictionary* server= [[NSDictionary alloc]initWithObjectsAndKeys:
-                           [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
-                           @"json",kOpen311_Format,
-                          @"http://respond311api.respondcrm.com/dev/V2.0/Open311API.svc/",kOpen311_Url,
-                          //@"http://192.168.3.17/RESPOND-Open311API/Open311API.svc/",kOpen311_Url,
-                           @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
-                           [account objectForKey:kRst_AccountName],kOpen311_Name,
-                           jurisdictionId,kOpen311_Jurisdiction,nil];
+                               [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
+                               @"json",kOpen311_Format,
+                               @"http://respond311demoapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
+                               //@"http://192.168.3.17/RESPOND-Open311API/Open311API.svc/",kOpen311_Url,
+                               @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
+                               [account objectForKey:kRst_AccountName],kOpen311_Name,
+                               jurisdictionId,kOpen311_Jurisdiction,nil];
         [[Preferences sharedInstance] setCurrentServer:server];
         currentServer=server;
         [self refreshEndpointParams];
@@ -400,11 +414,11 @@ SHARED_SINGLETON(Open311);
         NSDictionary* server= [[NSDictionary alloc]initWithObjectsAndKeys:
                                [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
                                @"json",kOpen311_Format,
-                               @"http://respond311api.respondcrm.com/dev/V2.0/Open311API.svc/",kOpen311_Url,
+                               @"http://respond311demoapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
                                //@"http://192.168.3.17/RESPOND-Open311API/Open311API.svc/",kOpen311_Url,
                                @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
                                [account objectForKey:kRst_AccountName],kOpen311_Name,
-                               @"municipiospr",kOpen311_Jurisdiction,nil];
+                               @"respond311",kOpen311_Jurisdiction,nil];
         [[Preferences sharedInstance] setCurrentServer:server];
         currentServer=server;
         [self refreshEndpointParams];
@@ -430,7 +444,7 @@ SHARED_SINGLETON(Open311);
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_PostFailed object:self];
     NSString *title = NSLocalizedString(kUI_FailurePostingService, nil);
     NSString *message = [error localizedDescription];
-
+    
     if (operation) {
         NSError *e;
         NSArray *serviceRequests = [NSJSONSerialization JSONObjectWithData:[operation responseData] options:nil error:&e];
@@ -535,34 +549,34 @@ SHARED_SINGLETON(Open311);
 - (void)postReport:(Report *)report withPost:(NSMutableURLRequest *)post
 {
     AFHTTPRequestOperation *operation = [httpClient HTTPRequestOperationWithRequest:post
-        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSNotificationCenter *notifications = [NSNotificationCenter defaultCenter];
-            
-            NSError *error;
-            NSArray *serviceRequests = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
-            if (!error) {
-                NSMutableDictionary *sr = [NSMutableDictionary dictionaryWithDictionary:serviceRequests[0]];
-                if (sr[kOpen311_ServiceRequestId] || sr[kOpen311_Token]) {
-                    report.requestedDate  = [NSDate date];
-                    report.server         = currentServer;
-                    report.serviceRequest = sr;
-                    [[Preferences sharedInstance] saveReport:report forIndex:-1];
-                    [notifications postNotificationName:kNotification_PostSucceeded object:self];
-                }
-                else {
-                    // We got a 200 response back in the correct format
-                    // However, it did not include a token or a service_request_id
-                    [notifications postNotificationName:kNotification_PostFailed object:self];
-                }
-            }
-            else {
-                // We got a 200 response, but it was not valid JSON
-                [notifications postNotificationName:kNotification_PostFailed object:self];
-            }
-        }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            [self postFailedWithError:error forOperation:operation];
-        }];
+                                                                            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                                                                                NSNotificationCenter *notifications = [NSNotificationCenter defaultCenter];
+                                                                                
+                                                                                NSError *error;
+                                                                                NSArray *serviceRequests = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
+                                                                                if (!error) {
+                                                                                    NSMutableDictionary *sr = [NSMutableDictionary dictionaryWithDictionary:serviceRequests[0]];
+                                                                                    if (sr[kOpen311_ServiceRequestId] || sr[kOpen311_Token]) {
+                                                                                        report.requestedDate  = [NSDate date];
+                                                                                        report.server         = currentServer;
+                                                                                        report.serviceRequest = sr;
+                                                                                        [[Preferences sharedInstance] saveReport:report forIndex:-1];
+                                                                                        [notifications postNotificationName:kNotification_PostSucceeded object:self];
+                                                                                    }
+                                                                                    else {
+                                                                                        // We got a 200 response back in the correct format
+                                                                                        // However, it did not include a token or a service_request_id
+                                                                                        [notifications postNotificationName:kNotification_PostFailed object:self];
+                                                                                    }
+                                                                                }
+                                                                                else {
+                                                                                    // We got a 200 response, but it was not valid JSON
+                                                                                    [notifications postNotificationName:kNotification_PostFailed object:self];
+                                                                                }
+                                                                            }
+                                                                            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                                [self postFailedWithError:error forOperation:operation];
+                                                                            }];
     [operation start];
 }
 
@@ -579,7 +593,7 @@ SHARED_SINGLETON(Open311);
        [CLLocationManager authorizationStatus]==kCLAuthorizationStatusRestricted)
     {
         UIAlertView *errorAlert = [[UIAlertView alloc]
-         initWithTitle:NSLocalizedString(kUI_EnableLocationServicesTitle,nil) message:NSLocalizedString(kUI_EnableLocationServices,nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                                   initWithTitle:NSLocalizedString(kUI_EnableLocationServicesTitle,nil) message:NSLocalizedString(kUI_EnableLocationServices,nil) delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [errorAlert show];
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
@@ -592,7 +606,7 @@ SHARED_SINGLETON(Open311);
         locationFirstTime=false;
         return;
     }
-
+    
     
     [geocoder reverseGeocodeLocation:newLocation completionHandler:^(NSArray *placemarks, NSError *error) {
         NSString *szMessage= @"";
@@ -640,17 +654,17 @@ SHARED_SINGLETON(Open311);
 
 - (void) locationManager:(CLLocationManager*)manager didUpdateLocations:(NSArray *)locations{
     
-   /* if(newLocation!=nil){
-        
-        NSDate *eventDate = newLocation.timestamp;
-        NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
-        if(abs(howRecent) < 10.0)
-        {
-         //  [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
-            return;
-        }
-    }
-    */
+    /* if(newLocation!=nil){
+     
+     NSDate *eventDate = newLocation.timestamp;
+     NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+     if(abs(howRecent) < 10.0)
+     {
+     //  [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
+     return;
+     }
+     }
+     */
     if(locationFirstTime==true){
         locationFirstTime=false;
         return;
@@ -660,7 +674,7 @@ SHARED_SINGLETON(Open311);
     
     //newLocation = [locations lastObject];
     //*oldLocation;
-   
+    
     if(locations.count>1){
         oldLocation = [locations objectAtIndex:locations.count-2];
     }else{
@@ -672,7 +686,7 @@ SHARED_SINGLETON(Open311);
         
         if (error == nil && [placemarks count] > 0) {
             placemark = [placemarks lastObject];
-           
+            
             if(placemark.locality!= NULL)
             {
                 NSLog(@"Locality:%@",placemark.locality);
@@ -688,7 +702,7 @@ SHARED_SINGLETON(Open311);
         } else {
             NSLog(@"%@", error.debugDescription);
         }
-
+        
         [locationManager stopUpdatingLocation];
         [[NSNotificationCenter defaultCenter] postNotificationName:kNotification_CurrentLocationUpdated object:self];
     } ];

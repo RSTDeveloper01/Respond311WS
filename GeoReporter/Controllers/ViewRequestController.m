@@ -54,12 +54,15 @@ static CGFloat    const kMediaCellHeight = 122;
                  resultBlock:^(ALAsset *asset) {
                      ALAssetRepresentation *rep = [asset defaultRepresentation];
                      UIImage *original = [UIImage imageWithCGImage:[rep fullScreenImage]];
-                     media = [Media resizeImage:original toBoundingBox:100];
+                     media = [Media resizeImage:original toBoundingBox:250];
                  }
                 failureBlock:^(NSError *error) {
                     DLog(@"Failed to load media from library");
                 }];
     }
+    
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    self.tableView.estimatedRowHeight = 300;
 }
 
 - (void)startBusyIcon
@@ -319,10 +322,12 @@ static CGFloat    const kMediaCellHeight = 122;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (mediaUrl && indexPath.section==0 && indexPath.row==0) {
+    /*if (mediaUrl && indexPath.section==0 && indexPath.row==0) {
         return 122;
     }
-    return UITableViewAutomaticDimension;
+    return UITableViewAutomaticDimension;*/
+    
+    return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
 

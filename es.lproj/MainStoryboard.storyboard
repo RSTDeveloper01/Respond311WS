@@ -15,6 +15,7 @@
                 <navigationController definesPresentationContext="YES" id="4Gh-8H-htc" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="tb_home" id="1zM-4g-Oio"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="f6q-gv-jec">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -29,8 +30,15 @@
         <scene sceneID="HiD-Za-JmN">
             <objects>
                 <navigationController definesPresentationContext="YES" id="dUA-P5-eVf" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Report" image="tb_request" id="UwH-TJ-ain"/>
+                    <tabBarItem key="tabBarItem" title="Report" image="tb_request" id="UwH-TJ-ain">
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
+                                <color key="value" red="0.0" green="0.37647058820000001" blue="0.56470588239999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </tabBarItem>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="h4L-ZC-ezC">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -47,6 +55,7 @@
                 <navigationController definesPresentationContext="YES" id="N2K-i0-tPx" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Archive" image="tb_myreports" id="ZTS-lu-jEl"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Pum-Z0-EvX">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -931,14 +940,21 @@
                     <toolbarItems/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="BNr-ru-NxJ">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" red="0.0" green="0.37647058820000001" blue="0.56470588239999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="tintColor">
-                                <color key="value" red="0.10674253106117249" green="0.59266149997711182" blue="0.68180352449417114" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="value" red="0.0" green="0.37647058820000001" blue="0.56470588239999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </tabBar>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="keyPath">
+                            <color key="value" red="0.0" green="0.37647058820000001" blue="0.56470588239999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="4Gh-8H-htc" kind="relationship" relationship="viewControllers" id="Kgh-hz-Q33"/>
                         <segue destination="dUA-P5-eVf" kind="relationship" relationship="viewControllers" id="Lhd-Ii-Zvi"/>

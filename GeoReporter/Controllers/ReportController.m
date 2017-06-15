@@ -438,7 +438,7 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
         cell.textLabel.text = field[kLabel];
         [cell.imageView setImage:nil];
         // Media cell
-        if ([fieldname isEqualToString:kOpen311_Media]) {
+       /* if ([fieldname isEqualToString:kOpen311_Media]) {
             NSURL *url = _report.postData[kOpen311_Media];
             if (url != nil) {
                 // When the user-selected mediaUrl changes, we need to load a fresh thumbnail image
@@ -465,7 +465,7 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
             }
         }
         // Location cell
-        else if ([fieldname isEqualToString:kOpen311_Address]) {
+        else */if ([fieldname isEqualToString:kOpen311_Address]) {
             NSString *address   = _report.postData[kOpen311_AddressString];
             NSString *latitude  = _report.postData[kOpen311_Latitude];
             NSString *longitude = _report.postData[kOpen311_Longitude];
@@ -732,12 +732,12 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [geocoder reverseGeocodeLocation:[[CLLocation alloc] initWithLatitude:location.latitude longitude:location.longitude]
                    completionHandler:^(NSArray *placemarks, NSError *error) {
-                       if([[placemarks[0] administrativeArea] isEqualToString:@"Puerto Rico"] || [[placemarks[0] administrativeArea] isEqualToString:@"PR"])
-                       {
+                     /*  if([[placemarks[0] administrativeArea] isEqualToString:@"Puerto Rico"] || [[placemarks[0] administrativeArea] isEqualToString:@"PR"])
+                       {*/
                            NSString *address = [NSString stringWithFormat:@"%@ %@ %@ %@", [placemarks[0] name],[placemarks[0] locality],[placemarks[0] administrativeArea],[placemarks[0] postalCode]];
                            _report.postData[kOpen311_AddressString] = address ? address : @"";
                            [self.tableView reloadData];
-                       }
+                   /*    }
                        else{
                            _report.postData[kOpen311_Latitude]  = @"";
                            _report.postData[kOpen311_Longitude] = @"";
@@ -745,7 +745,7 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
                            [alertView show];
                            _report.postData[kOpen311_AddressString] = @"";
                            [self.tableView reloadData];
-                       }
+                       }*/
                    }];
     
     [self popViewAndReloadTable];
@@ -886,7 +886,7 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
         alertButton = @"Go to Setings";
     }
     else
-    {ja        alertText = @"It looks like your privacy settings are preventing us from accessing your camera to do barcode scanning. You can fix this by doing the following:\n\n1. Close this app.\n\n2. Open the Settings app.\n\n3. Scroll to the bottom and select this app in the list.\n\n4. Touch Privacy.\n\n5. Turn the Camera on.\n\n6. Open this app and try again.";
+    {       alertText = @"It looks like your privacy settings are preventing us from accessing your camera to do barcode scanning. You can fix this by doing the following:\n\n1. Close this app.\n\n2. Open the Settings app.\n\n3. Scroll to the bottom and select this app in the list.\n\n4. Touch Privacy.\n\n5. Turn the Camera on.\n\n6. Open this app and try again.";
         
         alertButton = @"OK";
     }

@@ -36,7 +36,7 @@ static NSString * const kSegueToReport  = @"SegueToReport";
     open311 = [Open311 sharedInstance];
     selectedService= [[NSDictionary alloc]init];
     currentServerName = [[Preferences sharedInstance] getCurrentServer][kOpen311_Name];
-    self.navigationItem.title = [self.account objectForKey:kRst_AccountName];
+    self.navigationItem.title = @"Service";
     hasRetrievedServDef=NO;
     
     [self startBusyIcon];
@@ -46,6 +46,7 @@ static NSString * const kSegueToReport  = @"SegueToReport";
                                                object:open311];
     [self loadServices];
     
+     
 }
 
 - (void) loadServices{

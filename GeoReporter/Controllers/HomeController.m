@@ -16,7 +16,7 @@
 #import "Open311.h"
 #import "AFJSONRequestOperation.h"
 #import "ChooseServiceController.h"
-
+#import "WebViewController.h"
 
 @interface HomeController ()
 
@@ -25,12 +25,14 @@
 static NSString * const kSegueToSettings = @"SegueToSettings";
 static NSString * const kSegueToArchive  = @"SegueToArchive";
 static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
+static NSString * const kSegueToBrowser = @"SegueToBrowser";
 @implementation HomeController {
     Open311 *open311;
     CLGeocoder *geocoder;
     CLPlacemark *placemark;
     UIActivityIndicatorView *busyIcon;
     NSDictionary *selectedAccount;
+    NSString *urlToWebView;
 }
 
 - (void)viewDidLoad
@@ -57,6 +59,14 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
  
     //removes the extra separators from the tableview
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    selectedAccount = [NSDictionary dictionaryWithObjectsAndKeys:
+                       @"Respond311",@"account_name",
+                       @"",@"url"
+                       , nil];
+    
+  
+
 }
 
 
@@ -67,34 +77,39 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
     [super viewWillAppear:animated];
     open311 = [Open311 sharedInstance];
     
+    
     if(open311.accounts == nil || (open311.accounts!= nil && open311.accounts.count == 0)){
         Preferences *preferences = [Preferences sharedInstance];
         NSDictionary *currentServer = [preferences getCurrentServer];
-     
+        
         if(currentServer == nil)
         {
             NSDictionary* server= [[NSDictionary alloc]initWithObjectsAndKeys:
-                               [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
-                               @"json",kOpen311_Format,
-                               @"http://respond311api.respondcrm.com/dev/V2.0/Open311API.svc/",kOpen311_Url,
-                               //@"http://192.168.3.17/RESPOND-Open311API/Open311API.svc/",kOpen311_Url,
-                               @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
-                               @"Municipios PR",kOpen311_Name,
-                               @"municipiospr",kOpen311_Jurisdiction,nil];
+                                   [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
+                                   @"json",kOpen311_Format,
+                                   @"http://respond311demoapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
+                                   @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
+                                   @"Respond311",kOpen311_Name,
+                                   @"respond311",kOpen311_Jurisdiction,nil];
             currentServer = server;
             [preferences setCurrentServer:server];
             
         }
-    
-
+        
+        
         [self startBusyIcon];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountListReady)
-                                                 name:kNotification_AccountListReady
-                                               object:open311];
+                                                 selector:@selector(accountListReady)
+                                                     name:kNotification_AccountListReady
+                                                   object:open311];
+        
+     
         
         [open311 loadAllMetadataForServer:currentServer];
     }
+    
+    
+    
     [self refreshPersonalInfo];
 }
 
@@ -159,7 +174,22 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
 #pragma mark - Table Handler Methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (indexPath.section == 0 && indexPath.row == 2) {
+        
+        
+        CGRect textRect = [self.kbSubtitle.text boundingRectWithSize:CGSizeMake(300, 140)
+                                                                    options:NSStringDrawingUsesLineFragmentOrigin
+                                                                 attributes:@{NSFontAttributeName:self.kbSubtitle.font}
+                                                                    context:nil];
+        
+        CGSize size = textRect.size;
+        
+        
+        NSInteger height = size.height + 40;
+        return (CGFloat)height;
+    }
+    else if (indexPath.section == 0 && indexPath.row == 4) {
         
         
         CGRect textRect = [self.personalInfoLabel.text boundingRectWithSize:CGSizeMake(300, 140)
@@ -183,19 +213,50 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
     if (indexPath.section == 0) {
         if (indexPath.row == 0) {
             
-        
+            
+            selectedAccount = [NSDictionary dictionaryWithObjectsAndKeys:
+                               @"Respond311",@"account_name",
+                               @"",@"url"
+                               , nil];
+            
+            
+           // [[self.tabBarController.tabBar.items objectAtIndex:kTab_Report]setEnabled:NO];
+           [self performSegueWithIdentifier:kSegueToServices sender:self];
+        //   [self.tabBarController setSelectedIndex:kTab_Report];
+            
+          //  [self.tabBarController setSelectedIndex:kTab_Report];
+            
+            
+            
+        /*
             [self startBusyIcon];
             [[NSNotificationCenter defaultCenter] addObserver:self
                                                      selector:@selector(locationUpdated)
                                                          name:@"currentLocationUpdated"
                                                        object:open311];
             [open311 clearGpsCity];
-            [open311 refreshLocation];
+            [open311 refreshLocation];*/
         }
         if (indexPath.row == 1) {
             [self.tabBarController setSelectedIndex:kTab_Archive];
         }
-        if(indexPath.row == 2){
+        if(indexPath.row ==2){
+            urlToWebView = @"http://respond311web.respondcrm.com/Pages/KBSearch.aspx";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        if(indexPath.row ==3){
+            urlToWebView = @"http://311explorer.nola.gov/main/GERT%2BTOWN/All%2BCategories/All%2BSubcategories/";
+//WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        if(indexPath.row == 4){
              [self performSegueWithIdentifier:kSegueToSettings sender:self];
         }
     }
@@ -213,7 +274,7 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
     NSString *userCity=@"";
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     
-    if([userDefaults objectForKey:kOpen311_City]!=nil)
+   /* if([userDefaults objectForKey:kOpen311_City]!=nil)
     {
         userCity= [userDefaults objectForKey:kOpen311_City];
     }
@@ -229,6 +290,8 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
     else if([[open311 accounts]count]>0){
         [self.tabBarController setSelectedIndex:kTab_Report];
     }
+    */
+    [self.tabBarController setSelectedIndex:kTab_Report];
 }
 
 #pragma mark Action Sheet Delegate Methods
@@ -327,7 +390,7 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
     }
 }
 
-#pragma mark Tab Bar Controller Delegate Methods
+#pragma mark 
 
 -(void) tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController{
     
@@ -346,29 +409,38 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
         gpsCity = open311.gpsCity;
     }
     
+   
     
-    if([tabBarController.tabBar.items objectAtIndex:kTab_Report] == viewController.tabBarItem
-       && (![gpsCity isEqualToString:@""] || ![userCity isEqualToString:@""]))
-    {
-
+    
+    
+    
+    
+    if([tabBarController.tabBar.items objectAtIndex:kTab_Report] == viewController.tabBarItem){
+        selectedAccount = [NSDictionary dictionaryWithObjectsAndKeys:
+                           @"Respond311",@"account_name",
+                           @"",@"url"
+                           , nil];
         
-        [self startBusyIcon];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(locationUpdated)
-                                                     name:@"currentLocationUpdated"
-                                                   object:open311];
-        [open311 clearGpsCity];
-        [open311 refreshLocation];
-        //[self.tabBarController setSelectedIndex:kTab_Home];
+        //[[self.tabBarController.tabBar.items objectAtIndex:kTab_Report]setEnabled:NO];
+        [self performSegueWithIdentifier:kSegueToServices sender:self];
+        [self.tabBarController setSelectedIndex:kTab_Report];
     }
-    else {
-        if([viewController isKindOfClass:[UINavigationController class]]){
-            [(UINavigationController*)viewController popToRootViewControllerAnimated:NO];
-        }
+    
+    if([viewController isKindOfClass:[UINavigationController class]]){
+        [(UINavigationController*)viewController popToRootViewControllerAnimated:NO];
     }
+    
 }
 
+- (BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender {
+    if([identifier isEqualToString:kSegueToServices] && selectedAccount == nil){
+        return NO;
+    }
+    else{
+        return YES;
+    }
+}
+/*
 -(BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
     if([tabBarController.tabBar.items objectAtIndex:kTab_Report] == viewController.tabBarItem)
@@ -388,14 +460,23 @@ static NSString * const kSegueToServices = @"SegueToChooseServiceFromAccount";
 
 
     
-}
+}*/
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([segue.identifier isEqualToString:kSegueToServices]){
         ChooseServiceController *chooseService = [segue destinationViewController];
         chooseService.account = selectedAccount;
-        selectedAccount=nil;
+        //selectedAccount=nil;
+    }
+    if([segue.identifier isEqualToString:kSegueToBrowser] ){
+        WebViewController * wbc = segue.destinationViewController;
+        // This is how you will pass the object or data you want for the next view
+        wbc.viewURL = urlToWebView;
+          // [segue.destinationViewController setDelegate:self];
+    }
+    else if([segue.identifier isEqualToString:kSegueToSettings]){
+        [segue.destinationViewController setDelegate:self];
     }
 }
 @end

@@ -21,6 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *personalInfoLabel;
 @property (weak, nonatomic) IBOutlet UILabel *currentLocationLabel;
 @property (weak, nonatomic) IBOutlet UILabel *locationLabel;
+@property (weak, nonatomic) IBOutlet UILabel *kbSubtitle;
 
 - (void)serviceListReady;
 
