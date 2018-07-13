@@ -147,14 +147,14 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
                         //NSString *code = [NSString stringWithFormat:@"%@", attribute[kOpen311_Code]];
                         NSString *type = attribute[kOpen311_Datatype];
                         NSString *typeDescription = attribute[kOpen311_DatatypeDescription];
-                        [attributes addObject:@{kFieldname:code, kLabel:attribute[kOpen311_Description], kType:type, kTypeDescription:typeDescription}];
+                        [tblRows addObject:@{kFieldname:code, kLabel:attribute[kOpen311_Description], kType:type, kTypeDescription:typeDescription,kOpen311_Code:attribute[kOpen311_Code],kOpen311_Values:attribute[kOpen311_Values],kOpen311_Description:attribute[kOpen311_Description]}];
                     }
                     
                     
                 }
-                if (attributes.count > 0) {
-                    [tblRows addObject:attributes];
-                }
+                //if (attributes.count > 0) {
+                //    [tblRows addObject:attributes];
+                //}
                 
             }
             //Fourth section:Personal Info
@@ -173,7 +173,7 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
     currentServerName = [[Preferences sharedInstance] getCurrentServer][kOpen311_Name];
     self.navigationItem.title = _service[kOpen311_ServiceName];
     
-    if ([_service[kOpen311_Metadata]boolValue]==YES) {
+    if ([_service[kOpen311_Metadata]boolValue]==TRUE) {
         busyIcon = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
         busyIcon.center = self.tabBarController.view.center;
         
@@ -525,7 +525,22 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
                         cell.detailTextLabel.text = NSLocalizedString(kUI_No, nil);
                     }
                     else{
-                        cell.detailTextLabel.text = [_report attributeValueForKey:userInput atIndex:indexPath.row];
+                //     NSString *str =    [field[kOpen311_Values] attributeValueForKey:userInput atIndex:indexPath.row];
+                        
+                   //     NSPredicate * predicate = [NSPredicate predicateWithFormat:@"key MATCHES[cd] %@", userInput];
+                   //     NSArray * matches = [field[kOpen311_Values][kOpen311_Value] filteredArrayUsingPredicate:predicate];
+                        
+                        
+                     //   NSString *fld =    [field[kOpen311_Values][kOpen311_Value] objectForKey: userInput];
+                        
+                        for (id tempObject in field[kOpen311_Values]) {
+                            if(tempObject[@"key"] == userInput)
+                                cell.detailTextLabel.text = tempObject[@"name"];
+                        }
+                        
+                        
+                        
+                       // cell.detailTextLabel.text = [_report attributeValueForKey:fieldname atIndex:indexPath.row];
                     }
                 }
             }
@@ -653,9 +668,32 @@ static NSString * const kSegueToSettings        = @"SegueToSettings";
     }
     else{
         [segue.destinationViewController setDelegate:self];
+        
+        NSString *inStr = [@(currentIndexPath.section) stringValue];
+        NSString *strRow = [@(currentIndexPath.row) stringValue];
+        NSLog([NSString stringWithFormat:@"%@ -- /%@",inStr,strRow]);
         // If this is data entry for an attribute, send the attribute definition
-        if (currentIndexPath.section == 2) {
-            NSDictionary *attribute = _report.serviceDefinition[kOpen311_Attributes][currentIndexPath.row];
+        
+        NSString *fldType = fields[currentIndexPath.section][currentIndexPath.row][kType];
+        
+        if (currentIndexPath.section == 0 && fldType != @"media" && fldType != @"address" && fldType != @"user_info") {
+            
+            NSDictionary *attribute = fields[currentIndexPath.section][currentIndexPath.row];//_report.serviceDefinition[kOpen311_Attributes][currentIndexPath.section];
+//            NSArray *tempAttr = _report.serviceDefinition[kOpen311_Attributes];
+//
+//            //Filtering serviceDefinition based on the field selection to get the attribute
+//            NSString *predicateString = [NSString stringWithFormat:@"%@ == '%@'", @"code", selectedattribute[@"code"]];
+//            NSPredicate *predicate = [NSPredicate predicateWithFormat:predicateString];
+//            NSArray *filteredResults = [tempAttr filteredArrayUsingPredicate:predicate];
+//
+//            NSDictionary *attribute = [filteredResults objectAtIndex:0];
+       
+           
+          //  NSPredicate *filter = [NSPredicate predicateWithFormat:@"code = 7cc53304-1d83-e811-82a7-005056a305c3"];
+         //   NSDictionary *filteredContacts = [tempAttr filteredArrayUsingPredicate:filter];
+            
+            
+            
             [segue.destinationViewController setAttribute:attribute];
             // The fieldname is different from the attribute code.
             // Fieldnames for attributes are in the form of "attribute[code]"

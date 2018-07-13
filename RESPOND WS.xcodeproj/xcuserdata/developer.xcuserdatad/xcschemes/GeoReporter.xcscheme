@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "69ED14DC16B2EE4C00232245"
-               BuildableName = "NOLA311.app"
+               BuildableName = "WS 311.app"
                BlueprintName = "RESPOND"
-               ReferencedContainer = "container:RESPOND.xcodeproj">
+               ReferencedContainer = "container:RESPOND WS.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "69ED150316B2EE4D00232245"
                BuildableName = "RESPOND.octest"
                BlueprintName = "Respond"
-               ReferencedContainer = "container:RESPOND.xcodeproj">
+               ReferencedContainer = "container:RESPOND WS.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -43,9 +43,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69ED14DC16B2EE4C00232245"
-            BuildableName = "NOLA311.app"
+            BuildableName = "WS 311.app"
             BlueprintName = "RESPOND"
-            ReferencedContainer = "container:RESPOND.xcodeproj">
+            ReferencedContainer = "container:RESPOND WS.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -66,9 +66,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69ED14DC16B2EE4C00232245"
-            BuildableName = "NOLA311.app"
+            BuildableName = "WS 311.app"
             BlueprintName = "RESPOND"
-            ReferencedContainer = "container:RESPOND.xcodeproj">
+            ReferencedContainer = "container:RESPOND WS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -85,9 +85,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "69ED14DC16B2EE4C00232245"
-            BuildableName = "NOLA311.app"
+            BuildableName = "WS 311.app"
             BlueprintName = "RESPOND"
-            ReferencedContainer = "container:RESPOND.xcodeproj">
+            ReferencedContainer = "container:RESPOND WS.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

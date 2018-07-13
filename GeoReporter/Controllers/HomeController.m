@@ -87,10 +87,10 @@ static NSString * const kSegueToBrowser = @"SegueToBrowser";
             NSDictionary* server= [[NSDictionary alloc]initWithObjectsAndKeys:
                                    [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
                                    @"json",kOpen311_Format,
-                                   @"http://respond311demoapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
+                                   @"http://respond311winstonsalemapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
                                    @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
-                                   @"Respond311",kOpen311_Name,
-                                   @"respond311",kOpen311_Jurisdiction,nil];
+                                   @"Respond311winstonsalem",kOpen311_Name,
+                                   @"respond311winstonsalem",kOpen311_Jurisdiction,nil];
             currentServer = server;
             [preferences setCurrentServer:server];
             
@@ -189,7 +189,7 @@ static NSString * const kSegueToBrowser = @"SegueToBrowser";
         NSInteger height = size.height + 40;
         return (CGFloat)height;
     }
-    else if (indexPath.section == 0 && indexPath.row == 4) {
+    else if (indexPath.section == 0 && indexPath.row == 10) {
         
         
         CGRect textRect = [self.personalInfoLabel.text boundingRectWithSize:CGSizeMake(300, 140)
@@ -241,7 +241,7 @@ static NSString * const kSegueToBrowser = @"SegueToBrowser";
             [self.tabBarController setSelectedIndex:kTab_Archive];
         }
         if(indexPath.row ==2){
-            urlToWebView = @"http://respond311web.respondcrm.com/Pages/KBSearch.aspx";
+            urlToWebView = @"http://respond311winstonsalemweb.respondcrm.com/Pages/KBSearch.aspx";
             //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
             //webController.viewURL = @"www.google.com"; // Set the exposed property
             
@@ -249,14 +249,75 @@ static NSString * const kSegueToBrowser = @"SegueToBrowser";
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
         }
         if(indexPath.row ==3){
-            urlToWebView = @"http://311explorer.nola.gov/main/GERT%2BTOWN/All%2BCategories/All%2BSubcategories/";
+            urlToWebView = @"http://respond311winstonsalemweb.respondcrm.com/Pages/CaseMap.aspx";
 //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
             //webController.viewURL = @"www.google.com"; // Set the exposed property
             
             [self performSegueWithIdentifier:kSegueToBrowser sender:self];
             //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
         }
-        if(indexPath.row == 4){
+        if(indexPath.row ==4){
+            urlToWebView = @"http://www.cityofws.org/home-center/calendar?skinsrc=%5Bl%5D/skins/WinstonSalem/print";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        if(indexPath.row ==5){
+            urlToWebView = @"http://www.cityofws.org/news?skinsrc=%5Bl%5D/skins/WinstonSalem/print";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        
+        if(indexPath.row ==6){
+            urlToWebView = @"http://www.cityofws.org/departments/city-link/city-link-faq?skinsrc=%5Bl%5D/skins/WinstonSalem/print";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        if(indexPath.row ==7){
+            urlToWebView = @"https://waterbills.cityofws.org/webinquiry/JSP/login.jsp";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        if(indexPath.row ==8){
+            urlToWebView = @"http://wstransit.com";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+
+        
+        
+        if(indexPath.row ==9){
+            urlToWebView = @"https://www.facebook.com/cityofwinstonsalem";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        if(indexPath.row ==10){
+            urlToWebView = @"https://twitter.com/cityofws";
+            //WebViewController *webController = [[WebViewController alloc] initWithNib:@"WebViewController" bundle:nil];
+            //webController.viewURL = @"www.google.com"; // Set the exposed property
+            
+            [self performSegueWithIdentifier:kSegueToBrowser sender:self];
+            //[[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://www.google.com"]];
+        }
+        
+        if(indexPath.row == 11){
              [self performSegueWithIdentifier:kSegueToSettings sender:self];
         }
     }

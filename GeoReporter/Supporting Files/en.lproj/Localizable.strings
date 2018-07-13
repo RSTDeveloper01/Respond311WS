@@ -1,7 +1,7 @@
 "title_home"="Home";
-"app_title"="NOLA 311";
+"app_title"="WS 311";
 "help_title"="Help";
-"help_text" ="This app is used to report issues to the municipalities of Puerto Rico. To get started, go to 'My Info' to record your personal information. Click “New Report” to report an issue. Please take a picture of the issue and allow us to use your GPS to locate the problem. Use the “My Reports” feature to check the status of your reported issues.\r\rThank you for improving Puerto Rico!";
+"help_text" ="This app is used to report issues to the city of Winston Salem, NC. To get started, go to 'My Info' to record your personal information. Click “New Report” to report an issue. Please take a picture of the issue and allow us to use your GPS to locate the problem. Use the “My Reports” feature to check the status of your reported issues.\r\rThank you for using WS 311!";
 "about_text"="\bRock Solid Technologies\r\r";
 "menu_settings"="My Info";
 "menu_report"="New Report";
@@ -73,7 +73,7 @@
 "service_request_failure" = "Failed to load service request information";
 "service_removed_title" = "This request does not exists in our system";
 "service_removed_message" = "This request does not longer exists. Do you want to delete this request from your list?";
-"failure_loading_services"="Failed to load municipalities information";
+"failure_loading_services"="Failed to load data";
 "general_communication_error"="A communication error has occurred. Verify your Internet connection and try again.";
 "failure_posting_service"="Posting report failed";
 "error_403"="This app does not have permission";

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "iphone",
-      "filename" : "NOLA311_471x140.png",
+      "filename" : "BannerWS_471x140.png",
       "scale" : "1x"
     },
     {
       "idiom" : "iphone",
-      "filename" : "NOLA311_942x280.png",
+      "filename" : "BannerWS_942x186.png",
       "scale" : "2x"
     },
     {
       "idiom" : "iphone",
-      "filename" : "NOLA311_1413x420.png",
+      "filename" : "BannerWS_1413x400.png",
       "scale" : "3x"
     }
   ],

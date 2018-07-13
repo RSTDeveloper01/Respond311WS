@@ -33,14 +33,19 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "NolaLogo_120.png",
+      "filename" : "WSLogo_120.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "NolaLogo_180.png",
+      "filename" : "WSLogo_180.png",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "ios-marketing",
+      "size" : "1024x1024",
+      "scale" : "1x"
     }
   ],
   "info" : {

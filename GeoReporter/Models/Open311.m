@@ -273,24 +273,24 @@ SHARED_SINGLETON(Open311);
         if (![_groups containsObject:group]) { [_groups addObject:group]; }
         
         // Fire off a service definition request, if needed
-        /*
-         __block NSString *serviceCode = [service objectForKey:kOpen311_ServiceCode];
-         __block NSString *serviceId = [service objectForKey:krst_ServiceId];
-         if ([[service objectForKey:kOpen311_Metadata] boolValue]) {
-         [httpClient getPath:[NSString stringWithFormat:@"services/%@.json", serviceId]
-         parameters:_endpointParameters
-         success:^(AFHTTPRequestOperation *operation, id responseObject) {
-         NSError *error;
-         _serviceDefinitions[serviceCode] = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
-         if (error) {
-         [self loadFailedWithError:error];
-         }
-         }
-         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         [self loadFailedWithError:error];
-         }
-         ];
-         }*/
+        
+        __block NSString *serviceCode = [service objectForKey:kOpen311_ServiceCode];
+        __block NSString *serviceId = [service objectForKey:krst_ServiceId];
+        if ([[service objectForKey:kOpen311_Metadata] boolValue]) {
+            [httpClient getPath:[NSString stringWithFormat:@"services/%@.json", serviceCode]
+                     parameters:_endpointParameters
+                        success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                            NSError *error;
+                            _serviceDefinitions[serviceCode] = [NSJSONSerialization JSONObjectWithData:responseObject options:nil error:&error];
+                            if (error) {
+                                [self loadFailedWithError:error];
+                            }
+                        }
+                        failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                            [self loadFailedWithError:error];
+                        }
+             ];
+        }
     }
     
     NSSortDescriptor *aToZ= [NSSortDescriptor sortDescriptorWithKey:@"self" ascending:YES];
@@ -313,7 +313,7 @@ SHARED_SINGLETON(Open311);
     __block NSString *serviceCode = [service objectForKey:kOpen311_ServiceCode];
     __block NSString *serviceId = [service objectForKey:krst_ServiceId];
     if ([[service objectForKey:kOpen311_Metadata] boolValue]) {
-        [httpClient getPath:[NSString stringWithFormat:@"services/%@.json", serviceId]
+        [httpClient getPath:[NSString stringWithFormat:@"services/%@.json", serviceCode]
                  parameters:_endpointParameters
                     success:^(AFHTTPRequestOperation *operation, id responseObject) {
                         NSError *error;
@@ -385,7 +385,7 @@ SHARED_SINGLETON(Open311);
 - (void) getServicesForAccount:(NSDictionary *)account
 {
     account = [NSDictionary dictionaryWithObjectsAndKeys:
-                       @"Respond311",@"account_name",
+                       @"Respond311winstonsalem",@"account_name",
                        @"",@"url"
                        , nil];
     
@@ -399,7 +399,7 @@ SHARED_SINGLETON(Open311);
         NSDictionary* server= [[NSDictionary alloc]initWithObjectsAndKeys:
                                [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
                                @"json",kOpen311_Format,
-                               @"http://respond311demoapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
+                               @"po",kOpen311_Url,
                                //@"http://192.168.3.17/RESPOND-Open311API/Open311API.svc/",kOpen311_Url,
                                @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
                                [account objectForKey:kRst_AccountName],kOpen311_Name,
@@ -414,11 +414,11 @@ SHARED_SINGLETON(Open311);
         NSDictionary* server= [[NSDictionary alloc]initWithObjectsAndKeys:
                                [NSNumber numberWithBool:TRUE],kOpen311_SupportsMedia,
                                @"json",kOpen311_Format,
-                               @"http://respond311demoapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
+                               @"http://respond311winstonsalemapi.respondcrm.com/Open311API.svc/",kOpen311_Url,
                                //@"http://192.168.3.17/RESPOND-Open311API/Open311API.svc/",kOpen311_Url,
                                @"00000000-0000-0000-0000-000000000000",kOpen311_ApiKey,
                                [account objectForKey:kRst_AccountName],kOpen311_Name,
-                               @"respond311",kOpen311_Jurisdiction,nil];
+                               @"respond311winstonsalem",kOpen311_Jurisdiction,nil];
         [[Preferences sharedInstance] setCurrentServer:server];
         currentServer=server;
         [self refreshEndpointParams];

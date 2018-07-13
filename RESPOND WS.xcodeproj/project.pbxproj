@@ -173,7 +173,7 @@
 		69E57B6B16BC1522004B7094 /* ChooseGroupController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseGroupController.m; sourceTree = "<group>"; };
 		69E57B6D16BC153A004B7094 /* ChooseServiceController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChooseServiceController.h; sourceTree = "<group>"; };
 		69E57B6E16BC153A004B7094 /* ChooseServiceController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChooseServiceController.m; sourceTree = "<group>"; };
-		69ED14DD16B2EE4C00232245 /* NOLA311.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NOLA311.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		69ED14DD16B2EE4C00232245 /* WS 311.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "WS 311.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		69ED14E116B2EE4C00232245 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		69ED14E316B2EE4C00232245 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		69ED14E516B2EE4C00232245 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -446,7 +446,7 @@
 		69ED14DE16B2EE4C00232245 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				69ED14DD16B2EE4C00232245 /* NOLA311.app */,
+				69ED14DD16B2EE4C00232245 /* WS 311.app */,
 				69ED150416B2EE4D00232245 /* RESPOND.octest */,
 			);
 			name = Products;
@@ -562,7 +562,7 @@
 			);
 			name = RESPOND;
 			productName = GeoReporter;
-			productReference = 69ED14DD16B2EE4C00232245 /* NOLA311.app */;
+			productReference = 69ED14DD16B2EE4C00232245 /* WS 311.app */;
 			productType = "com.apple.product-type.application";
 		};
 		69ED150316B2EE4D00232245 /* Respond */ = {
@@ -601,7 +601,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 69ED14D716B2EE4C00232245 /* Build configuration list for PBXProject "RESPOND" */;
+			buildConfigurationList = 69ED14D716B2EE4C00232245 /* Build configuration list for PBXProject "RESPOND WS" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -862,13 +862,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = PHW4YJV577;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GeoReporter/Supporting Files/RESPOND-Prefix.pch";
 				INFOPLIST_FILE = "GeoReporter/Supporting Files/RESPOND-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				PRIVATE_HEADERS_FOLDER_PATH = RESPOND.app/PrivateHeaders;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rocksolid.RESPOND311Demo;
-				PRODUCT_NAME = NOLA311;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocksolid.RESPOND311WS;
+				PRODUCT_NAME = "WS 311";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos6.1;
@@ -884,13 +885,14 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = PHW4YJV577;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "GeoReporter/Supporting Files/RESPOND-Prefix.pch";
 				INFOPLIST_FILE = "GeoReporter/Supporting Files/RESPOND-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				PRIVATE_HEADERS_FOLDER_PATH = RESPOND.app/PrivateHeaders;
-				PRODUCT_BUNDLE_IDENTIFIER = com.rocksolid.RESPOND311Demo;
-				PRODUCT_NAME = NOLA311;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rocksolid.RESPOND311WS;
+				PRODUCT_NAME = "WS 311";
 				PROVISIONING_PROFILE = "";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos6.1;
@@ -936,7 +938,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		69ED14D716B2EE4C00232245 /* Build configuration list for PBXProject "RESPOND" */ = {
+		69ED14D716B2EE4C00232245 /* Build configuration list for PBXProject "RESPOND WS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				69ED151416B2EE4D00232245 /* Debug */,
